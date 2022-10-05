@@ -25,7 +25,9 @@ public class HBaseDML {
      * @param columnName   列名
      * @param value        值
      */
-    public static void putCell(String namespace, String tableName, String rowKey, String columnFamily, String columnName, String value) throws IOException {
+    public static void putCell(String namespace, String tableName, String rowKey,
+                               String columnFamily, String columnName, String value)
+            throws IOException {
         // 1. 获取Table
         Table table = connection.getTable(TableName.valueOf(namespace, tableName));
 
@@ -127,7 +129,8 @@ public class HBaseDML {
      * @param value
      * @throws IOException
      */
-    public static void filterScan(String namespace, String tableName, String startRow, String stopRow, String columnFamily, String columnName, String value) throws IOException {
+    public static void filterScan(String namespace, String tableName, String startRow,
+                                  String stopRow, String columnFamily, String columnName, String value) throws IOException {
         Table table = connection.getTable(TableName.valueOf(namespace, tableName));
 
         Scan scan = new Scan();
@@ -176,6 +179,27 @@ public class HBaseDML {
         table.close();
     }
 
+    public static void deleteColumn(String namespace, String tableName,
+                                    String rowKey, String columnFamily, String columnName) throws IOException {
+        Table table = connection.getTable(TableName.valueOf(namespace, tableName));
+
+        Delete delete = new Delete(Bytes.toBytes(rowKey));
+
+        // 添加列信息
+        // addColumn删除一个版本
+        delete.addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes(columnName));
+        // 删除所有版本
+        delete.addColumns(Bytes.toBytes(columnFamily), Bytes.toBytes(columnName));
+
+        try {
+            table.delete(delete);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        table.close();
+    }
+
     public static void main(String[] args) throws IOException {
 //        putCell("test", "person", "2001", "info", "name", "zhang");
 //        putCell("test", "person", "2003", "info", "name", "zhang");
@@ -183,12 +207,17 @@ public class HBaseDML {
 //        putCell("test", "person", "3001", "info", "name", "zhang");
 //        putCell("test", "person", "2101", "info", "name", "zhang");
 
-        getCells("test", "person", "2001", "info", "name");
         System.out.println();
         scanRows("test", "person", "1111", "2222");
         System.out.println();
 
         filterScan("test", "person", "0000", "2999", "info", "name", "zhang");
+
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+        getCells("test", "person", "2001", "info", "name");
+        deleteColumn("test", "person", "2001", "info", "name");
+        getCells("test", "person", "2001", "info", "name");
 
         System.out.println("Other code!");
 

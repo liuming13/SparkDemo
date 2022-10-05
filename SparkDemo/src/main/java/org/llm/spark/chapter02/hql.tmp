@@ -1,0 +1,46 @@
+
+    `SEQ` string,
+    `酒店` string,
+    `国家` string,
+    `省份` string,
+    `城市` string,
+    `商圈` string,
+    `星级` string,
+    `业务部门` string,
+    `房间数` string,
+    `图片数` string,
+    `评分` string,
+    `评论数` string,
+    `城市平均实住间夜` string,
+    `酒店总订单` string,
+    `酒店总间夜` string,
+    `酒店实住订单` string,
+    `酒店实住间夜` string,
+    `酒店直销订单` string,
+    `酒店直销间夜` string,
+    `酒店直销实住订单` string,
+    `酒店直销实住间夜` string,
+    `酒店直销拒单` string,
+    `酒店直销拒单率` string,
+    `城市直销订单` string,
+    `城市直销拒单率` string,
+    `拒单率是否小于等于直销城市均值` string
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
